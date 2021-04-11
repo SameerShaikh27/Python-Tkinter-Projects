@@ -1,0 +1,139 @@
+from tkinter import *
+
+
+def click(event):
+    global scvalue
+    text = event.widget.cget("text")
+
+    if text == "=":
+        if scvalue.get().isdigit():
+            value = int(scvalue.get())
+        else:
+            value = eval(expression_area.get())
+
+        scvalue.set(value)
+        expression_area.update()
+
+    elif text == "C":
+        scvalue.set("")
+        expression_area.update()
+
+    else:
+        scvalue.set(scvalue.get() + text)
+        expression_area.update()
+
+
+if __name__ == "__main__":
+    root = Tk()
+
+    root.geometry("800x500")
+    root.title("Simple Calculator")
+
+    # Screen Value
+    scvalue = StringVar()
+    scvalue.set("")
+
+    expression_area = Entry(root, textvariable=scvalue, font="Cooper 15 bold", bd=10)
+    expression_area.pack(fill=X, padx=20, pady=20)
+
+    buttons_frame = Frame(root, bg="grey")
+
+    b_clear = Button(buttons_frame, text="C", bd=5, bg="black", fg="white", height=3, width=7)
+    b_clear.pack(side=LEFT, padx=3, pady=3)
+    b_clear.bind("<Button-1>", click)
+
+    b_modulus = Button(buttons_frame, text="%", bd=5, bg="black", fg="white", height=3, width=7)
+    b_modulus.pack(side=LEFT, padx=3, pady=3)
+    b_modulus.bind("<Button-1>", click)
+
+    b_square = Button(buttons_frame, text="^", bd=5, bg="black", fg="white", height=3, width=7)
+    b_square.pack(side=LEFT, padx=3, pady=3)
+    b_square.bind("<Button-1>", click)
+
+    b_divide = Button(buttons_frame, text="/", bd=5, bg="black", fg="white", height=3, width=7)
+    b_divide.pack(side=LEFT, padx=3, pady=3)
+    b_divide.bind("<Button-1>", click)
+
+    buttons_frame.pack()
+
+    buttons_frame = Frame(root, bg="grey")
+
+    b7 = Button(buttons_frame, text="7", bd=5, bg="black", fg="white", height=3, width=7)
+    b7.pack(side=LEFT, padx=3, pady=3)
+    b7.bind("<Button-1>", click)
+
+    b8 = Button(buttons_frame, text="8", bd=5, bg="black", fg="white", height=3, width=7)
+    b8.pack(side=LEFT, padx=3, pady=3)
+    b8.bind("<Button-1>", click)
+
+    b9 = Button(buttons_frame, text="9", bd=5, bg="black", fg="white", height=3, width=7)
+    b9.pack(side=LEFT, padx=3, pady=3)
+    b9.bind("<Button-1>", click)
+
+    b_multiply = Button(buttons_frame, text="x", bd=5, bg="black", fg="white", height=3, width=7)
+    b_multiply.pack(side=LEFT, padx=3, pady=3)
+    b_multiply.bind("<Button-1>", click)
+
+    buttons_frame.pack()
+
+    buttons_frame = Frame(root, bg="grey")
+
+    b4 = Button(buttons_frame, text="4", bd=5, bg="black", fg="white", height=3, width=7)
+    b4.pack(side=LEFT, padx=3, pady=3)
+    b4.bind("<Button-1>", click)
+
+    b5 = Button(buttons_frame, text="5", bd=5, bg="black", fg="white", height=3, width=7)
+    b5.pack(side=LEFT, padx=3, pady=3)
+    b5.bind("<Button-1>", click)
+
+    b6 = Button(buttons_frame, text="6", bd=5, bg="black", fg="white", height=3, width=7)
+    b6.pack(side=LEFT, padx=3, pady=3)
+    b6.bind("<Button-1>", click)
+
+    b_minus = Button(buttons_frame, text="-", bd=5, bg="black", fg="white", height=3, width=7)
+    b_minus.pack(side=LEFT, padx=3, pady=3)
+    b_minus.bind("<Button-1>", click)
+
+    buttons_frame.pack()
+
+    buttons_frame = Frame(root, bg="grey")
+
+    b1 = Button(buttons_frame, text="1", bd=5, bg="black", fg="white", height=3, width=7)
+    b1.pack(side=LEFT, padx=3, pady=3)
+    b1.bind("<Button-1>", click)
+
+    b2 = Button(buttons_frame, text="2", bd=5, bg="black", fg="white", height=3, width=7)
+    b2.pack(side=LEFT, padx=3, pady=3)
+    b2.bind("<Button-1>", click)
+
+    b3 = Button(buttons_frame, text="3", bd=5, bg="black", fg="white", height=3, width=7)
+    b3.pack(side=LEFT, padx=3, pady=3)
+    b3.bind("<Button-1>", click)
+
+    b_plus = Button(buttons_frame, text="+", bd=5, bg="black", fg="white", height=3, width=7)
+    b_plus.pack(side=LEFT, padx=3, pady=3)
+    b_plus.bind("<Button-1>", click)
+
+    buttons_frame.pack()
+
+    buttons_frame = Frame(root, bg="grey")
+
+    b00 = Button(buttons_frame, text="00", bd=5, bg="black", fg="white", height=3, width=7)
+    b00.pack(side=LEFT, padx=3, pady=3)
+    b00.bind("<Button-1>", click)
+
+    b0 = Button(buttons_frame, text="0", bd=5, bg="black", fg="white", height=3, width=7)
+    b0.pack(side=LEFT, padx=3, pady=3)
+    b0.bind("<Button-1>", click)
+
+    b_decimal = Button(buttons_frame, text=".", bd=5, bg="black", fg="white", height=3, width=7)
+    b_decimal.pack(side=LEFT, padx=3, pady=3)
+    b_decimal.bind("<Button-1>", click)
+
+    b_equalsto = Button(buttons_frame, text="=", bd=5, bg="black", fg="white", height=3, width=7)
+    b_equalsto.pack(side=LEFT, padx=3, pady=3)
+    b_equalsto.bind("<Button-1>", click)
+
+    buttons_frame.pack()
+
+    root.mainloop()

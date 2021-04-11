@@ -1,0 +1,139 @@
+from tkinter import *
+from openpyxl import *
+from tkinter import messagebox
+
+# opening the existing excel file
+wb = load_workbook('C:\\Users\\Sameer\\form.xlsx')
+
+# create the sheet object
+sheet = wb.active
+
+
+def excel():
+    # resize the width of columns in excel spreadsheet
+    sheet.column_dimensions['A'].width = 30
+    sheet.column_dimensions['B'].width = 30
+    sheet.column_dimensions['C'].width = 10
+    sheet.column_dimensions['D'].width = 10
+    sheet.column_dimensions['E'].width = 15
+    sheet.column_dimensions['F'].width = 30
+    sheet.column_dimensions['G'].width = 60
+
+    # write given data to an excel spreadsheet at particular location
+    sheet.cell(row=1, column=1).value = "Name"
+    sheet.cell(row=1, column=2).value = "Course"
+    sheet.cell(row=1, column=3).value = "Semester"
+    sheet.cell(row=1, column=4).value = "Form.No"
+    sheet.cell(row=1, column=5).value = "Contact.No"
+    sheet.cell(row=1, column=6).value = "Email Id"
+    sheet.cell(row=1, column=7).value = "Address"
+
+
+# Function for clearing the contents of text entry boxes
+def clear():
+    # clear the content of text entry box
+    e1.delete(0, END)
+    e2.delete(0, END)
+    e3.delete(0, END)
+    e4.delete(0, END)
+    e5.delete(0, END)
+    e6.delete(0, END)
+    e7.delete(0, END)
+
+
+# Function to take data from registration form and insert to an excel file
+def insert():
+    # if user not fill any entry then show "Input Error"
+    if (e1.get() == "" and e2.get() == "" and e3.get() == "" and e4.get() == "" and e5.get() == "" and e6.get() == ""
+            and e7.get() == ""):
+        messagebox.showerror("Input Error", "Fill the form")
+
+    # assigning the max row and max column value up to which data is written in an excel sheet to the variable
+    else:
+        current_row = sheet.max_row
+        current_column = sheet.max_column
+
+        # get method returns current text as string which we insert into excel spreadsheet at particular location
+        sheet.cell(row=current_row + 1, column=1).value = e1.get()
+        sheet.cell(row=current_row + 1, column=2).value = e2.get()
+        sheet.cell(row=current_row + 1, column=3).value = e3.get()
+        sheet.cell(row=current_row + 1, column=4).value = e4.get()
+        sheet.cell(row=current_row + 1, column=5).value = e5.get()
+        sheet.cell(row=current_row + 1, column=6).value = e6.get()
+        sheet.cell(row=current_row + 1, column=7).value = e7.get()
+
+        wb.save('C:\\Users\\Sameer\\form.xlsx')
+
+        e1.focus_set()
+
+        clear()
+
+
+if __name__ == "__main__":
+
+    root = Tk()
+
+    root.title("Course Registration Form")
+    root.geometry("700x600")
+    excel()
+
+    # Labels
+    l_title = Label(root, text="Registration Form", font=("Cooper", "30", "bold", "underline"), pady=20)
+    l_title.grid(row=0, column=1)
+
+    l1 = Label(root, text="Full Name", font="Cooper 15 bold")
+    l1.grid(row=1, column=0)
+
+    l2 = Label(root, text="Course", font="Cooper 15 bold", pady=10)
+    l2.grid(row=2, column=0)
+
+    l3 = Label(root, text="Semester", font="Cooper 15 bold")
+    l3.grid(row=3, column=0)
+
+    l4 = Label(root, text="Form.No", font="Cooper 15 bold", pady=10)
+    l4.grid(row=4, column=0)
+
+    l5 = Label(root, text="Contact.No", font="Cooper 15 bold")
+    l5.grid(row=5, column=0)
+
+    l6 = Label(root, text="Email Id", font="Cooper 15 bold", pady=10)
+    l6.grid(row=6, column=0)
+
+    l7 = Label(root, text="Address", font="Cooper 15 bold")
+    l7.grid(row=7, column=0)
+
+    # Entries For The Labels
+    e1 = Entry(root, bd=5)
+    e1.bind("<Return>")
+    e1.grid(row=1, column=1, ipadx=100, ipady=2)
+
+    e2 = Entry(root, bd=5)
+    e2.bind("<Return>")
+    e2.grid(row=2, column=1, ipadx=100, ipady=2, pady=10)
+
+    e3 = Entry(root, bd=5)
+    e3.bind("<Return>")
+    e3.grid(row=3, column=1, ipadx=100, ipady=2)
+
+    e4 = Entry(root, bd=5)
+    e4.bind("<Return>")
+    e4.grid(row=4, column=1, ipadx=100, ipady=2, pady=10)
+
+    e5 = Entry(root, bd=5)
+    e5.bind("<Return>")
+    e5.grid(row=5, column=1, ipadx=100, ipady=2)
+
+    e6 = Entry(root, bd=5)
+    e6.bind("<Return>")
+    e6.grid(row=6, column=1, ipadx=100, ipady=2, pady=10)
+
+    e7 = Entry(root, bd=5)
+    e7.bind("<Return>")
+    e7.grid(row=7, column=1, ipadx=100, ipady=2)
+
+    excel()
+
+    b1 = Button(root, text="Submit", font="Cooper 15 bold", bg="grey", bd=5, command=insert)
+    b1.grid(row=8, column=1, pady=15)
+
+    root.mainloop()

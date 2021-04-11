@@ -1,0 +1,142 @@
+from tkinter import *
+from tkinter import messagebox
+
+# global list is declare for storing all the task
+tasks_list = []
+
+# global variable is declare for counting the task
+counter = 1
+
+
+# Function for checking input error when empty input is given in task field
+def input_error():
+
+    # check for enter task field is empty or not
+    if entry_task.get() == "":
+
+        # show the error message
+        messagebox.showerror("Input Error", "Write something in the 'Enter Your Task'")
+
+        return 0
+
+    return 1
+
+
+# Function for clearing the contents of task number text field
+def clear_taskNumberField():
+
+    # clear the content of task number text field
+    text_deletearea.delete(0.0, END)
+
+
+# Function for clearing the contents of task entry field
+def clear_taskEntryField():
+
+    # clear the content of task field entry box
+    entry_task.delete(0, END)
+
+
+# Function for inserting the contents from the task entry field to the text area
+def insertTask():
+
+    global counter
+
+    # check for error
+    value = input_error()
+
+    # if error occur then return
+    if value == 0:
+        return
+
+    # get the task entry field character concatenated with new line character
+    content = entry_task.get() + "\n"
+
+    # store task in the list 'tasks_list' is a global variable that we have assign above
+    tasks_list.append(content)
+
+    # insert content of task entry field to the text area
+    # add task one by one in below one by one
+    text_textarea.insert('end -1 chars', " [ " + str(counter) + " ] " + content)
+    # incremented
+    counter += 1
+
+    # function calling for deleting the content of task field
+    clear_taskEntryField()
+
+
+# function for deleting the specified task
+def delete():
+
+    global counter
+
+    # if nothing is written in text_textarea then this error will occur
+    if len(tasks_list) == 0:
+        messagebox.showerror("Input Error", "No Tasks")
+        return
+
+    # get the task number, which is required to delete
+    number = text_deletearea.get(1.0, END)
+
+    # this error will occur if you have insert a number to delete which is not present in a textarea
+    if number == "\n":
+        messagebox.showerror("Input Error", "Insert Correct Number")
+        return
+
+    else:
+        task_no = int(number)
+
+    # function calling for deleting the content of task number field
+    clear_taskNumberField()
+
+    # deleted specified task from the list
+    tasks_list.pop(task_no - 1)
+
+    # decremented
+    counter -= 1
+
+    # deleted specified task from the list
+    text_textarea.delete(1.0, END)
+
+    # rewriting the task after deleting one task at a time
+    for i in range(len(tasks_list)):
+        text_textarea.insert('end -1 chars', "[ " + str(i + 1) + " ] " + tasks_list[i])
+
+
+if __name__ == "__main__":
+
+    root = Tk()
+
+    root.geometry("700x600")
+    root.title("ToDo List")
+
+    label_title = Label(root, text="TO DO LIST", font=("Cooper", "25", "bold", "underline"), padx=280, fg="brown", pady=20)
+    label_title.grid(row=0, column=2)
+
+    label_task = Label(root, text="Enter Your Task", font="Cooper 15 bold", fg="red")
+    label_task.grid(row=1, column=2)
+
+    entry_task = Entry(root, bd=5)
+    entry_task.grid(row=2, column=2, pady=10, ipadx=15)
+
+    button_submit = Button(root, text="Submit", font="Cooper 15 bold", bg="grey", bd=5, fg="blue", command=insertTask)
+    button_submit.grid(row=3, column=2)
+
+    text_textarea = Text(root, height=5, width=25, font="Arial 12 bold", bd=5)
+    text_textarea.grid(row=4, column=2, pady=10)
+
+    label_delete = Label(root, text="Delete Task Number", font="Cooper 15 bold", fg="red")
+    label_delete.grid(row=5, column=2)
+
+    text_deletearea = Text(root, height=1, width=2, font="Arial 12 bold", bd=5)
+    text_deletearea.grid(row=6, column=2, pady=10)
+
+    button_delete = Button(root, text="Delete", font="Cooper 15 bold", bg="grey", bd=5, fg="blue", command=delete)
+    button_delete.grid(row=7, column=2)
+
+    button_exit = Button(root, text="Exit", font="Cooper 15 bold", bg="grey", bd=5, fg="blue", command=root.destroy)
+    button_exit.grid(row=8, column=2, pady=10)
+
+    root.mainloop()
+
+
+

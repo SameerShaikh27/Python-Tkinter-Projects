@@ -1,0 +1,427 @@
+from tkinter import *
+
+
+# Functions to display Credit Obtained, Total Credit and and CGPA
+def display():
+
+    # Variable to store total marks
+    total = 0
+
+    # Marks are allotted on the multiple of 5 (e_g1)
+    if eg1_value.get() == "A+":
+        Label(root, text="50").grid(row=5, column=4)
+        total += 50
+
+    if eg1_value.get() == "A":
+        Label(root, text="45").grid(row=5, column=4)
+        total += 45
+
+    if eg1_value.get() == "B":
+        Label(root, text="40").grid(row=5, column=4)
+        total += 40
+
+    if eg1_value.get() == "C":
+        Label(root, text="35").grid(row=5, column=4)
+        total += 35
+
+    if eg1_value.get() == "D":
+        Label(root, text="30").grid(row=5, column=4)
+        total += 30
+
+    if eg1_value.get() == "E":
+        Label(root, text="25").grid(row=5, column=4)
+        total += 25
+
+    if eg1_value.get() == "F":
+        Label(root, text="0").grid(row=5, column=4)
+        total += 0
+
+    # Marks are allotted on the multiple of 4 (e_g2)
+    if eg2_value.get() == "A+":
+        Label(root, text="40").grid(row=6, column=4)
+        total += 40
+
+    if eg2_value.get() == "A":
+        Label(root, text="36").grid(row=6, column=4)
+        total += 36
+
+    if eg2_value.get() == "B":
+        Label(root, text="32").grid(row=6, column=4)
+        total += 32
+
+    if eg2_value.get() == "C":
+        Label(root, text="28").grid(row=6, column=4)
+        total += 28
+
+    if eg2_value.get() == "D":
+        Label(root, text="24").grid(row=6, column=4)
+        total += 24
+
+    if eg2_value.get() == "E":
+        Label(root, text="20").grid(row=6, column=4)
+        total += 20
+
+    if eg2_value.get() == "F":
+        Label(root, text="0").grid(row=6, column=4)
+        total += 0
+
+    # Marks are allotted on the multiple of 5 (e_g3)
+    if eg3_value.get() == "A+":
+        Label(root, text="50").grid(row=7, column=4)
+        total += 50
+
+    if eg3_value.get() == "A":
+        Label(root, text="45").grid(row=7, column=4)
+        total += 45
+
+    if eg3_value.get() == "B":
+        Label(root, text="40").grid(row=7, column=4)
+        total += 40
+
+    if eg3_value.get() == "C":
+        Label(root, text="35").grid(row=7, column=4)
+        total += 35
+
+    if eg3_value.get() == "D":
+        Label(root, text="30").grid(row=7, column=4)
+        total += 30
+
+    if eg3_value.get() == "E":
+        Label(root, text="25").grid(row=7, column=4)
+        total += 25
+
+    if eg3_value.get() == "F":
+        Label(root, text="0").grid(row=7, column=4)
+        total += 0
+
+    # Marks are allotted on the multiple of 5 (e_g4)
+    if eg4_value.get() == "A+":
+        Label(root, text="50").grid(row=8, column=4)
+        total += 50
+
+    if eg4_value.get() == "A":
+        Label(root, text="45").grid(row=8, column=4)
+        total += 45
+
+    if eg4_value.get() == "B":
+        Label(root, text="40").grid(row=8, column=4)
+        total += 40
+
+    if eg4_value.get() == "C":
+        Label(root, text="35").grid(row=8, column=4)
+        total += 35
+
+    if eg4_value.get() == "D":
+        Label(root, text="30").grid(row=8, column=4)
+        total += 30
+
+    if eg4_value.get() == "E":
+        Label(root, text="25").grid(row=8, column=4)
+        total += 25
+
+    if eg4_value.get() == "F":
+        Label(root, text="0").grid(row=8, column=4)
+        total += 0
+
+    # Marks are allotted on the multiple of 4 (e_g5)
+    if eg5_value.get() == "A+":
+        Label(root, text="40").grid(row=9, column=4)
+        total += 40
+
+    if eg5_value.get() == "A":
+        Label(root, text="36").grid(row=9, column=4)
+        total += 36
+
+    if eg5_value.get() == "B":
+        Label(root, text="32").grid(row=9, column=4)
+        total += 32
+
+    if eg5_value.get() == "C":
+        Label(root, text="28").grid(row=9, column=4)
+        total += 28
+
+    if eg5_value.get() == "D":
+        Label(root, text="24").grid(row=9, column=4)
+        total += 24
+
+    if eg5_value.get() == "E":
+        Label(root, text="20").grid(row=9, column=4)
+        total += 20
+
+    if eg5_value.get() == "F":
+        Label(root, text="0").grid(row=9, column=4)
+        total += 0
+
+    # Marks are allotted on the multiple of 4 (e_g6)
+    if eg6_value.get() == "A+":
+        Label(root, text="40").grid(row=10, column=4)
+        total += 40
+
+    if eg6_value.get() == "A":
+        Label(root, text="36").grid(row=10, column=4)
+        total += 36
+
+    if eg6_value.get() == "B":
+        Label(root, text="32").grid(row=10, column=4)
+        total += 32
+
+    if eg6_value.get() == "C":
+        Label(root, text="28").grid(row=10, column=4)
+        total += 28
+
+    if eg6_value.get() == "D":
+        Label(root, text="24").grid(row=10, column=4)
+        total += 24
+
+    if eg6_value.get() == "E":
+        Label(root, text="20").grid(row=10, column=4)
+        total += 20
+
+    if eg6_value.get() == "F":
+        Label(root, text="").grid(row=10, column=4)
+        total += 0
+
+    # Marks are allotted on the multiple of 4 (e_g7)
+    if eg7_value.get() == "A+":
+        Label(root, text="40").grid(row=11, column=4)
+        total += 40
+
+    if eg7_value.get() == "A":
+        Label(root, text="36").grid(row=11, column=4)
+        total += 36
+
+    if eg7_value.get() == "B":
+        Label(root, text="32").grid(row=11, column=4)
+        total += 32
+
+    if eg7_value.get() == "C":
+        Label(root, text="28").grid(row=11, column=4)
+        total += 28
+
+    if eg7_value.get() == "D":
+        Label(root, text="24").grid(row=11, column=4)
+        total += 24
+
+    if eg7_value.get() == "E":
+        Label(root, text="20").grid(row=11, column=4)
+        total += 20
+
+    if eg7_value.get() == "F":
+        Label(root, text="0").grid(row=11, column=4)
+        total += 0
+
+    # Marks are allotted on the multiple of 5 (e_g8)
+    if eg8_value.get() == "A+":
+        Label(root, text="50").grid(row=12, column=4)
+        total += 50
+
+    if eg8_value.get() == "A":
+        Label(root, text="45").grid(row=12, column=4)
+        total += 45
+
+    if eg8_value.get() == "B":
+        Label(root, text="40").grid(row=12, column=4)
+        total += 40
+
+    if eg8_value.get() == "C":
+        Label(root, text="35").grid(row=12, column=4)
+        total += 35
+
+    if eg8_value.get() == "D":
+        Label(root, text="30").grid(row=12, column=4)
+        total += 30
+
+    if eg8_value.get() == "E":
+        Label(root, text="25").grid(row=12, column=4)
+        total += 25
+
+    if eg8_value.get() == "F":
+        Label(root, text="Fail").grid(row=12, column=4)
+        total += 0
+
+    # to display total credits
+    Label(root, text=str(total)).grid(row=13, column=4)
+
+    # to display CGPA and (total is 360 so we have to divide it by 36)
+    Label(root, text=str(total / 36)).grid(row=14, column=4)
+
+
+if __name__ == "__main__":
+
+    root = Tk()
+
+    root.geometry("1000x600")
+    root.title("CGPA MarkSheet")
+
+    # declaring objects for entering data
+    e1_value = StringVar()
+    e2_value = StringVar()
+    e3_value = StringVar()
+    eg1_value = StringVar()
+    eg2_value = StringVar()
+    eg3_value = StringVar()
+    eg4_value = StringVar()
+    eg5_value = StringVar()
+    eg6_value = StringVar()
+    eg7_value = StringVar()
+    eg8_value = StringVar()
+
+    l_title = Label(root, text="C.R College Result", font=("Cooper", "25", "bold", "underline"), pady=20, fg="blue")
+    l_title.grid(row=0, column=3)
+
+    # Students Info
+    l_name = Label(root, text="Name", font="Cooper 10 bold", padx=20)
+    l_name.grid(row=1, column=0)
+
+    l_roll_no = Label(root, text="Roll.No", font="Cooper 10 bold", pady=15, padx=20)
+    l_roll_no.grid(row=2, column=0)
+
+    l_reg_no = Label(root, text="Reg.No", font="Cooper 10 bold")
+    l_reg_no.grid(row=1, column=3)
+
+    e_name = Entry(root, textvariable=e1_value, bd=5)
+    e_name.grid(row=1, column=1)
+
+    e_roll_no = Entry(root, textvariable=e2_value, bd=5)
+    e_roll_no.grid(row=2, column=1)
+
+    e_reg_no = Entry(root, textvariable=e3_value, bd=5)
+    e_reg_no.grid(row=1, column=4)
+
+    # Serial_No, Subjects Name, Subjects Entries, Sub Credit and Credit Obtained Mentioned below
+    # Labels For Headings
+    l_srl_no = Label(root, text="Srl.No", font="Cooper 15 bold", pady=10)
+    l_srl_no.grid(row=4, column=0)
+
+    l_subject = Label(root, text="Subject", font="Cooper 15 bold", pady=10)
+    l_subject.grid(row=4, column=1)
+
+    l_grade = Label(root, text="Grade", font="Cooper 15 bold", pady=10)
+    l_grade.grid(row=4, column=2)
+
+    l_sub_credit = Label(root, text="Sub Credit", font="Cooper 15 bold", pady=10)
+    l_sub_credit.grid(row=4, column=3)
+
+    l_credit_obtained = Label(root, text="Credit Obtained", font="Cooper 15 bold", pady=10)
+    l_credit_obtained.grid(row=4, column=4)
+
+    # Labels for whole body
+    # Labels for serial No
+    l1 = Label(root, text="1", font="Cooper 10 bold")
+    l1.grid(row=5, column=0)
+
+    l2 = Label(root, text="2", font="Cooper 10 bold")
+    l2.grid(row=6, column=0)
+
+    l3 = Label(root, text="3", font="Cooper 10 bold")
+    l3.grid(row=7, column=0)
+
+    l4 = Label(root, text="4", font="Cooper 10 bold")
+    l4.grid(row=8, column=0)
+
+    l5 = Label(root, text="5", font="Cooper 10 bold")
+    l5.grid(row=9, column=0)
+
+    l6 = Label(root, text="6", font="Cooper 10 bold")
+    l6.grid(row=10, column=0)
+
+    l7 = Label(root, text="7", font="Cooper 10 bold")
+    l7.grid(row=11, column=0)
+
+    l8 = Label(root, text="8", font="Cooper 10 bold")
+    l8.grid(row=12, column=0)
+
+    # Labels for Subjects
+    # Maths
+    l_m = Label(root, text="Maths", font="Cooper 10 bold")
+    l_m.grid(row=5, column=1)
+
+    # Physics
+    l_p = Label(root, text="Physics", font="Cooper 10 bold")
+    l_p.grid(row=6, column=1)
+
+    # Algorithms
+    l_algo = Label(root, text="Algo", font="Cooper 10 bold")
+    l_algo.grid(row=7, column=1)
+
+    # Data Structure
+    l_ds = Label(root, text="DS", font="Cooper 10 bold")
+    l_ds.grid(row=8, column=1)
+
+    # Object Oriented programming
+    l_oop = Label(root, text="OOP", font="Cooper 10 bold")
+    l_oop.grid(row=9, column=1)
+
+    # Data Communication
+    l_dc = Label(root, text="DC", font="Cooper 10 bold")
+    l_dc.grid(row=10, column=1)
+
+    # Operating System
+    l_os = Label(root, text="OS", font="Cooper 10 bold")
+    l_os.grid(row=11, column=1)
+
+    # Internet Of Things
+    l_iot = Label(root, text="IOT", font="Cooper 10 bold")
+    l_iot.grid(row=12, column=1)
+
+    # Entry For Grades
+    e_g1 = Entry(root, textvariable=eg1_value, bd=5)
+    e_g1.grid(row=5, column=2)
+
+    e_g2 = Entry(root, textvariable=eg2_value, bd=5)
+    e_g2.grid(row=6, column=2)
+
+    e_g3 = Entry(root, textvariable=eg3_value, bd=5)
+    e_g3.grid(row=7, column=2)
+
+    e_g4 = Entry(root, textvariable=eg4_value, bd=5)
+    e_g4.grid(row=8, column=2)
+
+    e_g5 = Entry(root, textvariable=eg5_value, bd=5)
+    e_g5.grid(row=9, column=2)
+
+    e_g6 = Entry(root, textvariable=eg6_value, bd=5)
+    e_g6.grid(row=10, column=2)
+
+    e_g7 = Entry(root, textvariable=eg7_value, bd=5)
+    e_g7.grid(row=11, column=2)
+
+    e_g8 = Entry(root, textvariable=eg8_value, bd=5)
+    e_g8.grid(row=12, column=2)
+
+    # Labels for Subject Credits
+    l_1 = Label(root, text="5",  font="Cooper 10 bold")
+    l_1.grid(row=5, column=3)
+
+    l_2 = Label(root, text="4",  font="Cooper 10 bold")
+    l_2.grid(row=6, column=3)
+
+    l_3 = Label(root, text="5",  font="Cooper 10 bold")
+    l_3.grid(row=7, column=3)
+
+    l_4 = Label(root, text="5",  font="Cooper 10 bold")
+    l_4.grid(row=8, column=3)
+
+    l_5 = Label(root, text="4",  font="Cooper 10 bold")
+    l_5.grid(row=9, column=3)
+
+    l_6 = Label(root, text="4",  font="Cooper 10 bold")
+    l_6.grid(row=10, column=3)
+
+    l_7 = Label(root, text="4",  font="Cooper 10 bold")
+    l_7.grid(row=11, column=3)
+
+    l_8 = Label(root, text="5",  font="Cooper 10 bold")
+    l_8.grid(row=12, column=3)
+
+    b_submit = Button(root, text="Submit", font="Cooper 15 bold", command=display, bg="grey", bd=5)
+    b_submit.grid(row=13, column=2, pady=15)
+
+    l_total_credit = Label(root, text="Total Credit", font="Cooper 15 bold")
+    l_total_credit.grid(row=13, column=3)
+
+    l_cgpa = Label(root, text="CGPA", font="Cooper 15 bold")
+    l_cgpa.grid(row=14, column=3)
+
+    root.mainloop()
+    

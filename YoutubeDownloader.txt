@@ -1,0 +1,93 @@
+from tkinter import *
+from tkinter import ttk
+from tkinter import filedialog
+from pytube import YouTube
+
+root = Tk()
+
+root.geometry("600x500")
+root.title("YouTube Downloader")
+# Set all content in center
+root.columnconfigure(0, weight=1)
+root.config(background="antique white")
+
+Folder_Name = ""
+
+
+# File Location
+def openLocation():
+    global Folder_Name
+    Folder_Name = filedialog.askdirectory()
+    if len(Folder_Name) > 1:
+        l4_error.config(text=Folder_Name, fg='green')
+
+    else:
+        l4_error.config(text="Please Choose Folder!!", fg='red')
+
+
+# Download Video
+def downloadVideo():
+    choice = cb1_choices.get()
+    url = e1_url.get()
+
+    if len(url) > 1:
+        l2_error.config(text="URL Selected", fg="green")
+        yt = YouTube(url)
+
+        if choice == choices[0]:
+            select = yt.streams.filter(progressive=True).first()
+
+        elif choice == choices[1]:
+            select = yt.streams.filter(progressive=True).last()
+
+        elif choice == choices[2]:
+            select = yt.streams.filter(progressive=True).last()
+
+        elif choice == choices[3]:
+            select = yt.streams.filter(progressive=True).last()
+
+        elif choice == choices[4]:
+            select = yt.streams.filter(only_audio=True).last()
+
+        else:
+            l2_error.config(text="Paste Link Again!!", fg="red")
+
+    # Download Function
+    select.download(Folder_Name)
+    l6.config(text="Download Completed!!", fg='green')
+
+
+l1 = Label(root, text="Enter the URL of the video", font="Cooper 20 bold")
+l1.grid(pady=15)
+
+url_var = StringVar()
+e1_url = Entry(root, textvariable=url_var, bd=5)
+e1_url.grid(ipadx=50)
+
+l2_error = Label(root, text="URL is not selected", font="Cooper 12 bold", fg="red")
+l2_error.grid(pady=15)
+
+l3 = Label(root, text="Save the Video File", font="Cooper 20 bold")
+l3.grid()
+
+b1 = Button(root, text="Choose Path", font="Cooper 12 bold", bg='cyan', fg='black', bd=5, command=openLocation)
+b1.grid(pady=15)
+
+l4_error = Label(root, text="Path is not Selected", font="Cooper 12 bold", fg="red")
+l4_error.grid()
+
+l5 = Label(root, text="Select Quality", font="Cooper 20 bold")
+l5.grid(pady=15)
+
+# ComboBox
+choices = ['1080p', '760p', '480p', '360p', 'Only Audio']
+cb1_choices = ttk.Combobox(root, value=choices)
+cb1_choices.grid()
+
+b2 = Button(root, text="Download", font="Cooper 12 bold", bg='cyan', fg='black', bd=5, command=downloadVideo)
+b2.grid(pady=15)
+
+l6 = Label(root, text="", font="Cooper 12 bold")
+l6.grid()
+
+root.mainloop()

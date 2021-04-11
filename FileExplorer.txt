@@ -1,0 +1,27 @@
+from tkinter import *
+from tkinter import filedialog
+
+root = Tk()
+
+root.geometry("800x500")
+root.title("File-Explorer")
+
+
+def browsefiles():
+    filename = filedialog.askopenfilename(initialdir="/", title="Select a File", filetype=(("Text Files", "*.txt*"),
+                                                                                           ("All Files", "*.*")))
+    l1.configure(text="File Opened" + filename)
+
+
+root.configure(bg="white")
+
+l1 = Label(root, text="File Explorer using Tkinter", font="Cooper 22 bold", bg="grey")
+l1.grid(row=1, column=1, padx=200, pady=20)
+
+b1 = Button(root, text="Browse Files", font="Cooper 15 bold", command=browsefiles, bd=5)
+b1.grid(row=2, column=1, padx=200)
+
+b2 = Button(root, text="Exit", font="Cooper 15 bold", command=root.destroy, bd=5)
+b2.grid(row=3, column=1, padx=200, pady=20)
+
+root.mainloop()

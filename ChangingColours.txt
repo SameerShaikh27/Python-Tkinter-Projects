@@ -1,0 +1,88 @@
+from tkinter import *
+import random
+
+root = Tk()
+
+root.title("Write What You See")
+root.geometry("600x200")
+
+colours = ['Red', 'Blue', 'Green', 'Pink', 'Black', 'Yellow', 'Orange', 'Purple', 'Brown', 'grey']
+
+score = 0
+timeleft = 30
+
+
+def start_game(event):
+
+    if timeleft == 30:
+
+        # start the countdown timer.
+        count_down()
+
+    # Function to choose and display the next colour
+    next_colour()
+
+
+def next_colour():
+
+    # Use the globally declared 'score' and 'timeleft'
+    global score
+    global timeleft
+
+    # if a game is currently in play
+    if timeleft > 0:
+
+        # make the text entry box active.
+        text_entry.focus_set()
+
+        # if the colour typed is equal to the colour of the text
+        if text_entry.get().lower() == colours[1].lower():
+            score += 1
+
+        # clear the text entry box.
+        text_entry.delete(0, END)
+
+        random.shuffle(colours)
+
+        # changing the colours of text randomly and also changing the text from the 'colours' variable
+        text_label.config(fg=str(colours[1]), text=str(colours[0]))
+
+        score_label.config(text="Score : " + str(score))
+
+
+def count_down():
+
+    global timeleft
+
+    # if a game is in play
+    if timeleft > 0:
+
+        # decrement the timer.
+        timeleft -= 1
+
+        # update the time left label
+        time_label.config(text="Time Left  : " + str(timeleft))
+
+        # run the function again after 1 second.
+        time_label.after(1000, count_down)
+
+
+instruct_label = Label(root, text="Type in the colour of the words, and not the word text!", font="Cooper 15 bold")
+instruct_label.pack()
+
+score_label = Label(root, text="Press Enter to Start", font="Cooper 12 bold")
+score_label.pack()
+
+time_label = Label(root, text="Time Left: " + str(timeleft), font="Cooper 12 bold")
+time_label.pack()
+
+text_label = Label(root, font="Cooper 50 bold")
+text_label.pack()
+
+text_entry = Entry(root, bd=5)
+text_entry.bind("<Return>", start_game)
+text_entry.pack()
+
+text_entry.focus_set()
+
+root.mainloop()
