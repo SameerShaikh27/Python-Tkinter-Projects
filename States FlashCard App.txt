@@ -1,0 +1,108 @@
+from tkinter import *
+from PIL import ImageTk, Image
+import random
+
+root = Tk()
+
+root.geometry("500x600")
+root.title("Identify the States of India")
+
+
+# Function to Randomize the state
+def random_state():
+    global hinter, hintCount
+    # Clearing the Entry Box
+    e_answer.delete(0, END)
+    # Clearing the answer label from the screen
+    l_answer.config(text="")
+    # clearing the hint label
+    l_hint.config(text="")
+    # also clearing the hinter which keeps track of the Hints
+    hinter = ""
+    # To start the hint count from 0
+    hintCount = 0
+
+    # creating a list of state names
+    global our_states
+    our_states = ['andhra pradesh', 'arunachal pradesh', 'assam', 'chhattisgarh', 'goa', 'gujarat', 'haryana',
+                  'himachal pradesh', 'jharkhand', 'karnataka', 'kerala', 'madhya pradesh', 'maharashtra', 'manipur',
+                  'meghalaya', 'mizoram', 'nagaland', 'odisha', 'punjab', 'rajasthan', 'tamil nadu', 'telangana',
+                  'tripura', 'uttarakhand', 'west bengal']
+
+    # Here we are Picking states randomly from our_states variable
+    global gen_random
+    gen_random = random.randint(0, len(our_states) - 1)
+
+    # Creating a variable to load all the images from our states file using "our_states" list at one shot
+    # "gen_random" helps us to import images on the screen randomly
+    # Here we are also concatenating it just like we do after Image.open
+    state_img_load = "states/" + our_states[gen_random] + ".jpg"
+
+    # Inserting the images of states
+    global state_img
+    state_img = ImageTk.PhotoImage(Image.open(state_img_load))
+    show_state.config(image=state_img)
+
+
+def answer_state():
+    # Determining if the answer is correct or not
+    if e_answer.get().lower() == our_states[gen_random]:
+        l_answer.config(text=f"Correct!! It's {our_states[gen_random].title()}", fg="green")
+    else:
+        l_answer.config(text=f"Incorrect! It's not {e_answer.get().title()}", fg="red")
+
+
+# We are keeping hinter as an empty strings so that we can add hint letters into it one by one
+hinter = ""
+# To keep an account of how much letter is going to reveal at a time
+hintCount = 0
+
+
+def hint():
+    global hintCount, hinter
+
+    if hintCount < len(our_states[gen_random]):
+        hinter += our_states[gen_random][hintCount]
+        l_hint.config(text=hinter.title())
+        hintCount += 1
+
+
+# Creating Frame for States
+f_states = Frame(root)
+f_states.pack(pady=20)
+
+img_frame = Frame(f_states, bd=15, relief=RIDGE, bg="grey")
+img_frame.pack()
+
+show_state = Label(img_frame)
+show_state.grid(row=0, column=0, pady=10, padx=10)
+
+# Entry Box
+e_answer = Entry(f_states, font="cooper 15 bold", bd=5)
+e_answer.pack(pady=20)
+
+# Frame to align buttons in one line
+btn_frame = Frame(f_states)
+btn_frame.pack(pady=10)
+
+# Buttons and Entry Box
+b_hint = Button(btn_frame, text="Hint", font="Cooper 12 bold", bg="grey", bd=5, command=hint)
+b_hint.grid(row=0, column=0)
+
+b_submit = Button(btn_frame, text="Submit", font="cooper 12 bold", bg="grey", bd=5, command=answer_state)
+b_submit.grid(row=0, column=1, pady=10, padx=30)
+
+b_next = Button(btn_frame, text="Next State", font="cooper 12 bold", bg="grey", bd=5, command=random_state)
+b_next.grid(row=0, column=2, pady=10)
+
+# Label for Answers
+l_answer = Label(f_states, text="", font="cooper 15 bold")
+l_answer.pack(pady=10)
+
+# Label for hints
+l_hint = Label(f_states, text="", font="Cooper 15 bold")
+l_hint.pack(pady=10)
+
+
+random_state()
+root.mainloop()

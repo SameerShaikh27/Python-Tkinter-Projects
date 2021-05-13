@@ -1,0 +1,31 @@
+from tkinter import *
+from datetime import date
+
+root = Tk()
+
+root.title("Countdown App")
+root.geometry("500x260")
+# To set all oue contents at the center of the screen
+root.columnconfigure(0, weight=1)
+
+l1 = Label(root, text="KEEP STRIVING", font="Cooper 40 bold", bg="black", fg="blue")
+l1.grid(pady=10, ipady=10, ipadx=10)
+
+# Method to get the today's date
+today = date.today()
+# Getting today's date in more descriptive way using strftime
+# %A - Weekdays, %B - Month, %d - Date, %Y - Year
+f_today = today.strftime("%A - %B %d, %Y")
+
+l2 = Label(root, text=f"Today is {f_today}", font="Cooper 15 bold")
+l2.grid(pady=10)
+
+days_in_year = 365
+# %j - Today's Day number of year
+today_day_number = int(today.strftime("%j"))
+days_left = days_in_year - today_day_number
+
+l3 = Label(root, text=f"There are only {days_left} days left \n for 2022 to arrive!!", font="Cooper 20 bold")
+l3.grid(pady=20)
+
+root.mainloop()

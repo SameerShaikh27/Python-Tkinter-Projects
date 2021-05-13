@@ -1,0 +1,93 @@
+from tkinter import *
+import random
+
+root = Tk()
+
+root.title("Tic Tac Toe")
+root.geometry("600x400")
+
+l_title = Label(root, text="Ash's Pokemon Word Jumble Game", font=("Cooper", "25", "bold", "underline"), fg="#d50101")
+l_title.pack(pady=10)
+
+l1 = Label(root, text="", font="Cooper 40 bold")
+l1.pack(pady=10)
+
+
+def shuffler():
+    # Clearing Entry Boxes
+    e1.delete(0, END)
+    # Clearing Correct and Incorrect label
+    l2.config(text="")
+    # Clearing Hint label
+    l3.config(text="")
+
+    pokemons = ['Pikachu', 'Charizard', 'Snorlax', 'Bayleef', 'Gengar', 'Tauraus', 'Squirtle', 'Greninja', 'Lapras',
+              'Totodile', 'Quilava', 'Donphan', 'Swellow', 'Infernape', 'Gliscor', 'Krookodile', 'Talonflame', 'Buizel',
+              'Noivern', 'Hawlucha', 'Corphish', 'Sceptile', 'Noctowl', 'Torkoal', 'Dragonite']
+
+    # Making computer pick a random word from a list
+    global pick_words
+    pick_words = random.choice(pokemons)
+
+    # Breaking the pokemons words into pieces(letters) so that we can shuffle them
+    break_words = list(pick_words)
+    random.shuffle(break_words)
+
+    # Turning Shuffled list of letters into words
+    global shuffled_words
+    shuffled_words = ""
+    for letters in break_words:
+        shuffled_words += letters
+
+    # Returning Shuffled Words to the screen
+    l1.config(text=shuffled_words)
+
+
+def submit():
+    if e1.get().title() == pick_words:
+        l2.config(text=f"Correct!! It's {pick_words}", fg="green", font="Cooper 18 bold")
+    else:
+        l2.config(text=f"Incorrect!! It's Not {e1.get().title()}", fg="red", font="Cooper 18 bold")
+
+
+# To count number of hints
+hintCount = 0
+
+
+def hint(count):
+    global hintCount
+    hintCount = count
+
+    # Getting the length of the word in pokemon
+    word_length = len(pick_words)
+
+    # Show hint to the screen
+    if count < word_length:   
+        l3.config(text=f"{l3['text']} {pick_words[count]}")
+        hintCount += 1
+
+
+e1 = Entry(root, bd=5, font="arial 25 bold")
+e1.pack(pady=10)
+
+btn_frame = Frame(root)
+btn_frame.pack(pady=10)
+
+b_next = Button(btn_frame, text="Next Word", font="Cooper 12 bold", bg="#0931e4", fg="#ece505", bd=5, command=shuffler)
+b_next.grid(pady=10, row=0, column=0, padx=20)
+
+b_submit = Button(btn_frame, text="Submit", font="Cooper 12 bold", bg="#0931e4", fg="#ece505", bd=5, command=submit)
+b_submit.grid(row=0, column=1)
+
+b_hint = Button(btn_frame, text="Hint", font="Cooper 12 bold", bg="#0931e4", fg="#ece505", bd=5,
+                command=lambda: hint(hintCount))
+b_hint.grid(padx=20, row=0, column=2)
+
+l2 = Label(root, text="", font="Cooper 12 bold")
+l2.pack(pady=10)
+
+l3 = Label(root, text="", font="Cooper 12 bold")
+l3.pack(pady=10)
+
+shuffler()
+root.mainloop()

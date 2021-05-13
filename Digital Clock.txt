@@ -1,0 +1,23 @@
+from tkinter import *
+from time import strftime
+
+root = Tk()
+
+root.title("Digital Clock")
+root.geometry("560x100")
+root.config(background="black")
+
+
+def time():
+    string = strftime("%I : %M : %S : %p")
+    l1.config(text=string)
+    l1.after(1000, time)
+
+
+l1 = Label(root, font="Cooper 50 bold", foreground="white", background="black")
+l1.pack(anchor=CENTER, pady=10)
+time()
+
+root.mainloop()
+
+

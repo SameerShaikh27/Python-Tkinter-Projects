@@ -1,0 +1,73 @@
+import onetimepad
+from tkinter import *
+
+root = Tk()
+root.title("CRYPTOGRAPHY")
+root.geometry("600x460")
+
+
+def encryptMessage():
+    pt = e_pt.get()
+
+    # inbuilt function to encrypt a message
+    ct = onetimepad.encrypt(pt, 'random')
+    e_et.insert(0, ct)
+
+
+def decryptMessage():
+    ct1 = e_ct.get()
+
+    # inbuilt function to decrypt a message
+    pt1 = onetimepad.decrypt(ct1, 'random')
+    e_dt.insert(0, pt1)
+
+
+# creating labels and positioning them on the grid
+l_title = Label(root, text="CIPHER KEY GENERATOR", font=("Cooper", "25", "bold", "underline"), fg="blue", pady=20)
+l_title.pack()
+
+left_frame = Frame(root, relief=RIDGE, bd=10, bg="grey")
+left_frame.pack(pady=10, padx=10)
+
+right_frame = Frame(root, relief=RIDGE, bd=10, bg="grey")
+right_frame.pack(pady=10, padx=10)
+
+#  ****^^  LEFT FRAME  ^^****  #
+# Creating Labels
+l_pt = Label(left_frame, text='Plain Text :', font="cooper 10 bold", pady=10, bg="grey")
+l_pt.grid(row=0, column=0)
+
+l_et = Label(left_frame, text='Encrypted Text :', font="cooper 10 bold", bg="grey")
+l_et.grid(row=1, column=0)
+
+# Creating Entries
+e_pt = Entry(left_frame, bd=5, font="cooper 10 bold")
+e_pt.grid(row=0, column=1, pady=10, padx=10)
+
+e_et = Entry(left_frame, bd=5, font="cooper 10 bold")
+e_et.grid(row=1, column=1)
+
+# creating encryption button to produce the output
+b_en = Button(left_frame, text="Encrypt", font="cooper 10 bold", bg="red", fg="white", bd=5, command=encryptMessage)
+b_en.grid(row=2, column=1, pady=10)
+
+
+#  ****^^  RIGHT FRAME  ^^****  #
+l_ct = Label(right_frame, text="Cipher Text :", font="cooper 10 bold", bg="grey")
+l_ct.grid(row=0, column=0)
+
+l_dt = Label(right_frame, text="Decrypted Text :", font="cooper 10 bold", bg="grey")
+l_dt.grid(row=1, column=0)
+
+# creating entries
+e_ct = Entry(right_frame, bd=5, font="cooper 10 bold")
+e_ct.grid(row=0, column=1, pady=10, padx=10)
+
+e_dt = Entry(right_frame, bd=5, font="cooper 10 bold")
+e_dt.grid(row=1, column=1)
+
+# creating decryption button to produce the output
+b_de = Button(right_frame, text="Decrypt", font="cooper 10 bold", bg="green", fg="white", bd=5, command=decryptMessage)
+b_de.grid(row=2, column=1, pady=10)
+
+root.mainloop()

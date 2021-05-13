@@ -1,0 +1,372 @@
+from tkinter import *
+from tkinter import ttk
+from tkinter import filedialog
+import pygame
+import time
+from mutagen.mp3 import MP3
+
+root = Tk()
+
+root.geometry("640x460")
+root.title("I-Made Music Player")
+
+# Initializing the pygame
+pygame.mixer.init()
+
+
+# ******  DEFINING A FUNCTION TO GRAB THE LENGTH OF A SONG ON A STATUS BAR  ****** #
+
+def songLength():
+    # Here we are fixing the slider to prevent it from moving 2 seconds faster when we click forward or backward button
+    # Here if stopped means that the song is not playing
+    if stopped:
+        return
+
+    # We are using the get_pos() method to grab the current position of the song
+    # We are dividing pygame.mixer.music.get_pos() by 1000 so that we get the actual seconds and not milli seconds
+    current_time = pygame.mixer.music.get_pos() / 1000
+
+    # Converting current_time to the strf-time format
+    converted_current_time = time.strftime("%M:%S", time.gmtime(current_time))
+
+    # Fetching the whole length of the current song playing
+    # Here we are activating the listbox and the musics in it
+    music_file = musicStore.get(ACTIVE)
+
+    # Here we are adding the location and file type again so that it can grab the song from that directory
+    music_file = f"C:/Users/Sameer/PycharmProjects/Python Learning/Imagine Dragons/{music_file}.mp3"
+
+    # Getting to know the length of song with the help of mutagen
+    # Here we are Loading the song
+    song_mutagen = MP3(music_file)
+    # Here we are getting the length of song in seconds like (300 sec)
+    global song_length
+    song_length = song_mutagen.info.length
+
+    # Converting song_length to the strf-time format
+    converted_song_length = time.strftime("%M:%S", time.gmtime(song_length))
+
+    #  **^^**  ALL SLIDER THING  **^^**  #
+
+    # Here we are incrementing the above variable current_time by 1 
+    # So that the position of slider and current time of a song matches
+    current_time += 1
+    # Here we are stopping the converted_current_time to increment after the song was over
+    # By configuring it with the converted_song_length
+    if int(songSlider.get()) == int(song_length):
+        status_bar.config(text=f"Time Elapsed: {converted_song_length} of {converted_song_length}            ")
+
+    # Here paused = True which means that the song is paused
+    # we have placed it here because when we click pause button then the songLength function will stop here
+    # And the songSlider won't move further
+    elif paused:
+        pass
+
+    # if the position of slider and current time of song are equal it means that slider has not moved yet
+    elif int(songSlider.get()) == int(current_time):
+        # Here song_length is the actual length of a song in seconds (34.342s) and we are converting it to integer
+        slider_position = int(song_length)
+        # Here we are updating the position of slider to the current time of a song
+        songSlider.config(to=slider_position, value=int(current_time))
+
+    # if the position of slider and current time of song are not equal it means that slider has moved
+    else:
+        slider_position = int(song_length)
+        # Here we are updating the value to the current position of slider because When we fast forward the song
+        # We want that the position of slider to stay there and not come back to its original position
+        songSlider.config(to=slider_position, value=int(songSlider.get()))
+
+        # Here we are updating converted_current_time to the current position of slider
+        converted_current_time = time.strftime("%M:%S", time.gmtime(songSlider.get()))
+        # Configuring the status_bar to the screen
+        status_bar.config(text=f"Time Elapsed: {converted_current_time}  of  {converted_song_length}            ")
+
+        # Here we are incrementing the position of slider by 1 sec
+        sec_ahead = int(songSlider.get()) + 1
+        songSlider.config(value=sec_ahead)
+
+    # Grabbing and updating the length of a song after every 1 second
+    status_bar.after(1000, songLength)
+
+
+# ***** FUNCTIONS FOR THE MENUS IN MENU-BARS *****
+
+# Defining Function to Add One Song
+def add_one_song():
+    music_file = filedialog.askopenfilename(initialdir="Imagine Dragons/", title="Select a song", filetypes=[("mp3 Files", "*.mp3")])
+
+    # Removing the extras at the front and at the back of our song name
+    music_file = music_file.replace("C:/Users/Sameer/PycharmProjects/Python Learning/Imagine Dragons/", "")
+    music_file = music_file.replace(".mp3", "")
+
+    # Inserting the music file from directory to the listbox
+    musicStore.insert(END, music_file)
+
+
+# Defining Function to Add Multiple Songs
+def add_multiple_songs():
+    music_files = filedialog.askopenfilenames(initialdir="Imagine Dragons/", title="Select a song", filetypes=[("mp3 Files", "*.mp3")])
+
+    # Looping through the list of songs to replace the extras at the front and at the back of our song name
+    for music_file in music_files:
+        music_file = music_file.replace("C:/Users/Sameer/PycharmProjects/Python Learning/Imagine Dragons/", "")
+        music_file = music_file.replace(".mp3", "")
+
+        # Inserting the music file from directory to the listbox
+        musicStore.insert(END, music_file)
+
+
+# Defining Function To Delete One Song
+def delete_one_song():
+    # We are using stop() function here so that slider go back to it's starting position
+    stop()
+
+    # Deleting the selected song in playlist
+    musicStore.delete(ANCHOR)
+    # Here we are stopping the music also which get deleted
+    pygame.mixer.music.stop()
+
+
+# Defining Function To Delete Multiple Song
+def delete_multiple_songs():
+    # We are using stop() function here so that slider go back to it's starting position
+    stop()
+
+    # Deleting all the songs in a playlist
+    musicStore.delete(0, END)
+    # Here we are stopping the music also which get deleted
+    pygame.mixer.music.stop()
+
+
+#  ******  DEFINING A FUNCTION FOR MUSIC POSITION SLIDER  ******  #
+
+def slide(x):
+    # Copy all the below things from the play function
+    # Here we are activating the listbox and the musics in it
+    music_file = musicStore.get(ACTIVE)
+    # Here we are adding the location and file type again so that it can grab the song from that directory
+    music_file = f"C:/Users/Sameer/PycharmProjects/Python Learning/Imagine Dragons/{music_file}.mp3"
+
+    # we call this function of pygame to load the music_file
+    pygame.mixer.music.load(music_file)
+    # Here we are fetching the position of slider in form of integer while song is playing
+    pygame.mixer.music.play(loops=0, start=int(songSlider.get()))
+
+
+#  ******  DEFINING A FUNCTION FOR A VOLUME SLIDER  ******  #
+
+def volume(x):
+    pygame.mixer.music.set_volume(volumeSlider.get())
+
+
+# ****** DEFINING FUNCTIONS FOR MUSIC PLAYER BUTTONS ******
+
+# Defining Function To Enable Play Button
+def play():
+    # Configuring the value of slider equals to "0" because we want slider to get back to it's starting position
+    # When we select and play another song
+    songSlider.config(value="0")
+
+    global stopped
+    # stopped = False means that the song is not stopped it's playing
+    stopped = False
+
+    # Here we are activating the listbox and the musics in it
+    music_file = musicStore.get(ACTIVE)
+    # Here we are adding the location and file type again so that it can grab the song from that directory
+    music_file = f"C:/Users/Sameer/PycharmProjects/Python Learning/Imagine Dragons/{music_file}.mp3"
+
+    # we call this function of pygame to load the music_file
+    pygame.mixer.music.load(music_file)
+    # To play the music_file which is loaded
+    pygame.mixer.music.play(loops=0)
+
+    # Calling the songLength() function to grab the length of a song everytime when this function plays
+    songLength()
+
+
+global stopped
+# stopped = False means that the song is not stopped it's playing
+stopped = False
+
+
+# Defining Function To Enable Stop Button
+def stop():
+    # Configuring the value of slider equals to "0" because we want slider to get back to it's starting position
+    # When we stopped the song we want the status bar to be empty
+    status_bar.config(text="")
+    songSlider.config(value="0")
+
+    # This pygame function will completely stop the song
+    pygame.mixer.music.stop()
+    # This will remove that "grey" selection bar
+    musicStore.selection_clear(ACTIVE)
+
+    # Clearing the StatusBar
+    status_bar.config(text="")
+
+    # Here stopped = True means that tha song has stopped playing
+    global stopped
+    stopped = True
+
+
+global paused
+# paused = False means that the song is not paused it's playing
+paused = False
+
+
+# Defining Function To Enable Pause Button
+def pause(is_paused):
+    global paused
+    # Here is_paused is our intermediate which carry's our information to the function in the form of (True and False)
+    paused = is_paused
+
+    # paused = False means that the song is not paused it's playing
+    # Paused = True means that the song is paused
+
+    # Paused = True here
+    if paused:
+        # Un-pausing the song
+        pygame.mixer.music.unpause()
+        paused = False
+    else:
+        # Pausing the song
+        pygame.mixer.music.pause()
+        paused = True
+
+
+# Defining Function To Enable Forward Button
+def forward():
+    # Configuring the value of slider equals to "0" because we want slider to get back to it's starting position
+    # When we move forward we want the status bar to be empty
+    status_bar.config(text="")
+    songSlider.config(value="0")
+
+    # Here we are getting the tuple of current song playing
+    next_song = musicStore.curselection()
+
+    # Here we are removing the Tuple and adding one to the current song so that we can get to the other song
+    next_song = next_song[0]+1
+    # Here we are getting the name of the next song
+    music_file = musicStore.get(next_song)
+
+    # Here we are adding the location and file type again so that it can grab the song from that directory
+    music_file = f"C:/Users/Sameer/PycharmProjects/Python Learning/Imagine Dragons/{music_file}.mp3"
+
+    # we call this function of pygame to load the music_file
+    pygame.mixer.music.load(music_file)
+    # To play the music_file which is loaded
+    pygame.mixer.music.play(loops=0)
+
+    # Clearing the active selection bar of the current song
+    musicStore.selection_clear(0, END)
+    # Activating the selection bar on the next song
+    musicStore.activate(next_song)
+    musicStore.selection_set(next_song, last=None)
+
+
+# Defining Function To Enable Backward Button
+def backward():
+    # Configuring the value of slider equals to "0" because we want slider to get back to it's starting position
+    # When we move backward we want the status bar to be empty
+    status_bar.config(text="")
+    songSlider.config(value="0")
+
+    # Here we are getting the tuple of next song
+    prev_song = musicStore.curselection()
+
+    # Here we are removing the Tuple and adding one to the current song so that we can get to the other song
+    prev_song = prev_song[0]-1
+    # Here we are getting the next song name
+    music_file = musicStore.get(prev_song)
+
+    # Here we are adding the location and file type again so that it can grab the song from that directory
+    music_file = f"C:/Users/Sameer/PycharmProjects/Python Learning/Imagine Dragons/{music_file}.mp3"
+
+    # we call this function of pygame to load the music_file
+    pygame.mixer.music.load(music_file)
+    # To play the music_file which is loaded
+    pygame.mixer.music.play(loops=0)
+
+    # Clearing the active selection bar of the current song
+    musicStore.selection_clear(0, END)
+    # Activating the selection bar on the next song
+    musicStore.activate(prev_song)
+    musicStore.selection_set(prev_song, last=None)
+
+
+# Creating A Frame To Fit All Widgets In It
+masterFrame = Frame(root)
+masterFrame.pack()
+
+
+# Adding Listbox where all songs are gone-a place
+musicStore = Listbox(masterFrame, bg="#111111", fg="#c68d36", width=80, height=15, selectbackground="grey", selectforeground="blue")
+musicStore.grid(row=0, column=0, pady=20)
+
+# Creating A Music Position Slider
+songSlider = ttk.Scale(masterFrame, from_=0, to=100, orient=HORIZONTAL, value=0, command=slide, length=360)
+songSlider.grid(row=1, column=0, pady=20)
+
+# Creating A LabelFrame For Volume Slider
+lf_volumeSlider = LabelFrame(masterFrame, text="Volume")
+lf_volumeSlider.grid(row=0, column=1, pady=20, padx=20)
+
+# Creating A Volume Slider
+volumeSlider = ttk.Scale(lf_volumeSlider, from_=0, to=1, orient=VERTICAL, value=1, command=volume, length=140)
+volumeSlider.pack(pady=10)
+
+# Defining the images of buttons for Music Player
+pic_play = PhotoImage(file="MusicButtons/play.png")
+pic_pause = PhotoImage(file="MusicButtons/pause.png")
+pic_stop = PhotoImage(file="MusicButtons/stop.png")
+pic_forward = PhotoImage(file="MusicButtons/forward.png")
+pic_backward = PhotoImage(file="MusicButtons/backward.png")
+
+# Creating a Frame to align Music Player buttons in one row
+btn_frame = Frame(masterFrame)
+btn_frame.grid(row=2, column=0, pady=10)
+
+# Creating a Music Player buttons
+b_backward = Button(btn_frame, image=pic_backward, bd=0, command=backward)
+b_backward.grid(row=0, column=0, padx=10)
+
+b_stop = Button(btn_frame, image=pic_stop, bd=0, command=stop)
+b_stop.grid(row=0, column=1, padx=10)
+
+b_play = Button(btn_frame, image=pic_play, bd=0, command=play)
+b_play.grid(row=0, column=2, padx=10)
+
+b_pause = Button(btn_frame, image=pic_pause, bd=0, command=lambda: pause(paused))
+b_pause.grid(row=0, column=3, padx=10)
+
+b_forward = Button(btn_frame, image=pic_forward, bd=0, command=forward)
+b_forward.grid(row=0, column=4, padx=10)
+
+
+# Creating Menus
+menubar = Menu(root)
+root.config(menu=menubar)
+
+# Creating menu for adding songs
+AddMenu = Menu(menubar, tearoff=0)
+AddMenu.add_command(label="Add One Song", command=add_one_song)
+AddMenu.add_command(label="Add Multiple Song", command=add_multiple_songs)
+AddMenu.add_separator()
+AddMenu.add_command(label="Exit", command=root.quit)
+menubar.add_cascade(label="Add Songs", menu=AddMenu)
+
+
+# Creating menu for Deleting songs
+DeleteMenu = Menu(menubar, tearoff=0)
+DeleteMenu.add_command(label="Delete One Song", command=delete_one_song)
+DeleteMenu.add_command(label="Delete Multiple Song", command=delete_multiple_songs)
+menubar.add_cascade(label="Delete Songs", menu=DeleteMenu)
+
+
+# Creating A StatusBar To The Length Of A Song
+status_bar = Label(root, text="", bd=1, relief=GROOVE, anchor=E)
+status_bar.pack(fill=X, side=BOTTOM, ipady=2)
+
+root.mainloop()
+

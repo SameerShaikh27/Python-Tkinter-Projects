@@ -1,0 +1,53 @@
+from tkinter import *
+
+
+class Table:
+
+    def __init__(self, root):
+
+        for i in range(total_rows):
+            for j in range(total_columns):
+
+                self.e = Entry(root, font="Arial 10 bold", fg="blue")
+                self.e.grid(row=i, column=j)
+
+                self.e.insert(END, lst[i][j])
+
+
+lst = [('Serial Number', 'Employee Name', "Address", "Department", "Shift"),
+       (1, 'Cooper Henderson', 'America, New York', 'Tech', 'Night'),
+       (2, 'Mike Blake', 'America, Los Angeles', 'Tech', 'Day'),
+       (3, 'Mosh Phillips', 'America, New York', 'Marketing', 'Day'),
+       (4, 'Jacob Bartand', 'America, New York', 'Marketing', 'Day'),
+       (5, 'Mason Molly', 'America, Las Vegas', 'Marketing', 'Day'),
+       (6, 'Sophia Stallone', 'America, Boston', 'Finance', 'Day'),
+       (7, 'Jayden smith', 'America, Chicago', 'Tech', 'Night'),
+       (8, 'Noah Trevor', 'America, Atlanta', 'Tech', 'Night'),
+       (9, 'Olivia Smith', 'America, New Orleans', 'Finance', 'Day'),
+       (10, 'Emma Roberts', 'America, New York', 'Finance', 'Day'),
+       (11, 'Ava Max', 'America, New York', 'Marketing', 'Day'),
+       (12, 'Emily Rose', 'America, Boston', 'Tech', 'Day'),
+       (13, 'Ethan Wheeler', 'America, Washington DC', 'Tech', 'Day'),
+       (14, 'Liam Pratt', 'America, Washington DC', 'Finance', 'Day'),
+       (15, 'Hailey Cooper', 'America, Boston', 'Marketing', 'Day'),
+       (16, 'Samuel Jackson', 'America, Chicago', 'Marketing', 'Day'),
+       (17, 'Mary Bower', 'America, Chicago', 'Finance', 'Day'),
+       (18, 'Patricia Shelby', 'America, Atlanta', 'Finance', 'Day'),
+       (19, 'Cameroon Tyson', 'America, New York', 'Finance', 'Night'),
+       (20, 'Tyler Lautner', 'America, New York', 'Finance', 'Night')]
+
+
+# To get the length of Tuple present in the list which is 20
+total_rows = len(lst)
+# To get the length of a columns from the Tuples whose index number ranges between 0:4 
+total_columns = len(lst[0])
+
+root = Tk()
+
+root.geometry("700x400")
+root.title("Company's Employee Sheet")
+
+t = Table(root)
+
+root.mainloop()
+

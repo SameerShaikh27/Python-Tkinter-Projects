@@ -1,0 +1,58 @@
+from tkinter import *
+
+
+class GFG:
+    def __init__(self, master=None):
+        self.master = master
+
+        # Here we are giving (self.x = 1) because when we start the program 
+        # We want the rectangle to move in x-direction with a speed of 1.
+        # And we have given (self.y = 0) so that it won't move in y-direction because it don't have any speed
+        self.x = 1
+        self.y = 0
+
+        # canvas object to create shape
+        self.canvas = Canvas(master)
+        # canvas object to create shape
+        self.rectangle = self.canvas.create_rectangle(5, 5, 25, 25, fill="blue")
+        self.canvas.pack()
+
+        # calling function movement to move the rectangle
+        self.movement()
+
+    def movement(self):
+        # Here we are moving the rectangle in x and y direction
+        self.canvas.move(self.rectangle, self.x, self.y)
+        self.canvas.after(100, self.movement)
+
+    # for motion in negative x direction
+    # Here the value 5 or -5 defines the speed of the movement of a rectangle
+    def left(self, event):
+        self.x = -5
+        self.y = 0
+
+    # for motion in positive x direction
+    def right(self, event):
+        self.x = 5
+        self.y = 0
+
+    # for motion in positive y direction
+    def up(self, event):
+        self.x = 0
+        self.y = -5
+
+    # for motion in negative y direction
+    def down(self, event):
+        self.x = 0
+        self.y = 5
+
+
+if __name__ == "__main__":
+    master = Tk()
+    gfg = GFG(master)
+    master.title("Moving Rectangle")
+    master.bind("<KeyPress-Left>", lambda e: gfg.left(e))
+    master.bind("<KeyPress-Right>", lambda e: gfg.right(e))
+    master.bind("<KeyPress-Up>", lambda e: gfg.up(e))
+    master.bind("<KeyPress-Down>", lambda e: gfg.down(e))
+    mainloop()

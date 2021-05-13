@@ -1,0 +1,228 @@
+from tkinter import *
+from tkinter import messagebox
+from tkinter.filedialog import askopenfilename, asksaveasfilename
+import os
+from tkinter import font
+from tkinter import colorchooser
+
+if __name__ == "__main__":
+
+    root = Tk()
+    root.title("Untitled-Notepad")
+    root.geometry("800x500")
+
+    # alreadySaved = False means that the file is not saved already
+    global alreadySaved
+    alreadySaved = False
+
+    def newFile():
+        global file
+        root.title("Untitled-Notepad")
+        file = None
+        TextArea.delete(1.0, END)
+
+
+    def openFile():
+        global file
+        file = askopenfilename(defaultextension=".txt", filetypes=[("All Files", "*.*"), ("Text Documents", "*.txt"),
+                                                                (("HTML Files", "*.html"), ("Python Files", "*.py"))])
+
+        if file == "":
+            file = None
+        else:
+            root.title(os.path.basename(file) + " - Notepad")
+            TextArea.delete(1.0, END)
+            f = open(file, "r")
+            TextArea.insert(1.0, f.read())
+            f.close()
+
+        # To check if a file is already existed in our directory or not. We are using variable "file"
+        # So that we can find out that the file we are going to save is already exists or not
+        if file:
+            global alreadySaved
+            alreadySaved = file
+
+
+    def saveFile():
+        global alreadySaved
+        # if alreadySaved: means that the file is already saved and it exists
+        if alreadySaved:
+            f = open(alreadySaved, "w")
+            f.write(TextArea.get(1.0, END))
+            f.close()
+
+            # To let know user that your file is saved
+            messagebox.showinfo("Saved", "Your file is saved")
+
+        else:
+            saveAsFile()
+
+
+    def saveAsFile():
+        global file
+        if file == None:
+            file = asksaveasfilename(initialfile="Untitled.txt", defaultextension=".txt", filetypes=
+            [("All Files", "*.*"), ("Text Documents", "*.txt"), (("HTML Files", "*.html"), ("Python Files", "*.py"))])
+            if file == "":
+                file = None
+            else:
+                f = open(file, "w")
+                f.write(TextArea.get(1.0, END))
+                f.close()
+
+                root.title(os.path.basename(file) + " - Notepad")
+
+        else:
+            f = open(file, "w")
+            f.write(TextArea.get(1.0, END))
+            f.close()
+
+
+    def quitApp():
+        root.destroy()
+
+    def copy():
+        TextArea.event_generate("<<Copy>>")
+
+    def cut():
+        TextArea.event_generate("<<Cut>>")
+
+    def paste():
+        TextArea.event_generate("<<Paste>>")
+
+    def textBold():
+        # .cget("font") is used to extract the font from the text like the current style of the text
+        bold_font = font.Font(TextArea, TextArea.cget("font"))
+        # Configuring the font
+        bold_font.configure(weight="bold")
+
+        # Configuring a Textarea
+        TextArea.tag_configure("bold", font=bold_font)
+
+        # Defining the current_tags and "sel" means selection
+        # current_tags means the line of the text which is currently selected
+        current_tags = TextArea.tag_names("sel.first")
+
+        # To Bolder-ize the words or sentences that have been selected
+        if "bold" in current_tags:
+            TextArea.tag_remove("bold", "sel.first", "sel.last")
+        else:
+            TextArea.tag_add("bold", "sel.first", "sel.last")
+
+
+    def textItalic():
+        italic_font = font.Font(TextArea, TextArea.cget("font"))
+        # Configuring the font
+        italic_font.configure(slant="italic")
+
+        # Configuring a Textarea
+        TextArea.tag_configure("italic", font=italic_font)
+
+        # Defining the current_tags
+        current_tags = TextArea.tag_names("sel.first")
+
+        # To Italicize the words or sentences that have been selected
+        if "italic" in current_tags:
+            TextArea.tag_remove("italic", "sel.first", "sel.last")
+        else:
+            TextArea.tag_add("italic", "sel.first", "sel.last")
+
+
+    def text_color():
+        choose_color = colorchooser.askcolor(title="Choose color")[1]
+
+        color_font = font.Font(TextArea, TextArea.cget("font"))
+
+        # Configuring a Textarea
+        TextArea.tag_configure("color", font=color_font, foreground=choose_color)
+
+        # Defining the current_tags
+        current_tags = TextArea.tag_names("sel.first")
+
+        # T0 Colorize the words or sentences that have been selected
+        if "color" in current_tags:
+            TextArea.tag_add("color", "sel.first", "sel.last")
+        else:
+            TextArea.tag_add("color", "sel.first", "sel.last")
+
+
+    def about():
+        messagebox.showinfo("GUI Notepad", '''This is a basic Notepad. You'll have to use it temporarily. 
+        Advanced Notepad is in process...''')
+
+
+    def feedback():
+        value = messagebox.askquestion("Submit Feedback", "Do you like this version of Notepad?")
+        if value == "yes":
+            msg = "Great, We are glad to hear this feedback."
+        else:
+            msg = " Mail us about What went wrong in this Notepad"
+        messagebox.showinfo("Opinion Matters", msg)
+
+    #  **^^**  NOTEPAD INTERFACE  **^^**  #
+
+    #  **^^  ADDING SCROLLBARS  ^^**  #
+    scrollh = Scrollbar(root, orient="horizontal")
+    scrollh.pack(side=BOTTOM, fill=X)
+
+    scrollv = Scrollbar(root)
+    scrollv.pack(side=RIGHT, fill=Y)
+
+    #  **^^  ADDING TEXTAREA  ^^**  #
+    TextArea = Text(root, font="Arial 15", wrap=NONE, undo=True, bd=0)
+    # file = None means that any file don't exist in a particular directory
+    # we are going to use file = None for open, save as and save purpose
+    file = None
+    TextArea.pack(expand=True, fill=BOTH)
+    
+    #  **^^  CONFIGURING SCROLLBARS  ^^**  #
+    scrollh.config(command=TextArea.xview)
+    TextArea.config(xscrollcommand=scrollh.set)
+
+    scrollv.config(command=TextArea.yview)
+    TextArea.config(yscrollcommand=scrollv.set)
+
+    #  **^^  CREATING A MENU-BAR  ^^**  #
+    Menubar = Menu(root)
+    # FileMenu
+    FileMenu = Menu(Menubar, tearoff=0)
+
+    FileMenu.add_command(label="New", command=newFile)
+    FileMenu.add_command(label="Open", command=openFile)
+    FileMenu.add_command(label="Save", command=saveFile)
+    FileMenu.add_command(label="Save As....", command=saveAsFile)
+    FileMenu.add_separator()
+    FileMenu.add_command(label="Exit", command=quitApp)
+    Menubar.add_cascade(label="File", menu=FileMenu)
+
+    # EditMenu
+    EditMenu = Menu(Menubar, tearoff=0)
+
+    EditMenu.add_command(label="Undo", accelerator="Ctrl+z", command=TextArea.edit_undo)
+    EditMenu.add_command(label="Redo", accelerator="Ctrl+y", command=TextArea.edit_redo)
+    EditMenu.add_separator()
+    EditMenu.add_command(label="Copy", accelerator="Ctrl+c", command=copy)
+    EditMenu.add_command(label="Cut", accelerator="Ctrl+x", command=cut)
+    EditMenu.add_command(label="Paste", accelerator="Ctrl+v", command=paste)
+    Menubar.add_cascade(label="Edit", menu=EditMenu)
+
+    # TextEditMenu
+    EditTextMenu = Menu(Menubar, tearoff=0)
+
+    EditTextMenu.add_command(label="Bold", command=textBold)
+    EditTextMenu.add_command(label="Italic", command=textItalic)
+    EditTextMenu.add_separator()
+    EditTextMenu.add_command(label="Text Color", command=text_color)
+    Menubar.add_cascade(label="Edit Text", menu=EditTextMenu)
+
+    # HelpMenu
+    HelpMenu = Menu(Menubar, tearoff=0)
+
+    HelpMenu.add_command(label="Submit Feedback", command=feedback)
+    HelpMenu.add_command(label="About Notepad", command=about)
+    Menubar.add_cascade(label="Help", menu=HelpMenu)
+    
+    root.config(menu=Menubar)
+
+    root.mainloop()
+

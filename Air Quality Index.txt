@@ -1,0 +1,80 @@
+from tkinter import *
+import requests
+import json
+
+root = Tk()
+
+root.title("Air Quality Index")
+root.geometry("600x200")
+# To align all the contents at the center
+root.columnconfigure(0, weight=1)
+
+# https://www.airnowapi.org/aq/observation/zipCode/current/?format=application/json&zipCode=89129&distance=5&API_KEY=3241B677-4601-4C55-8072-8E428259C67E
+
+'''
+[
+Index Number 0:
+{"DateObserved":"2021-05-01 ","HourObserved":2,"LocalTimeZone":"PST","ReportingArea":"Las Vegas","StateCode":"NV","Latitude":36.206,"Longitude":-115.223,"ParameterName":"O3","AQI":45,"Category":{"Number":1,"Name":"Good"}},
+Index Number 1:
+{"DateObserved":"2021-05-01 ","HourObserved":2,"LocalTimeZone":"PST","ReportingArea":"Las Vegas","StateCode":"NV","Latitude":36.206,"Longitude":-115.223,"ParameterName":"PM2.5","AQI":28,"Category":{"Number":1,"Name":"Good"}},
+Index Number 2:
+{"DateObserved":"2021-05-01 ","HourObserved":2,"LocalTimeZone":"PST","ReportingArea":"Las Vegas","StateCode":"NV","Latitude":36.206,"Longitude":-115.223,"ParameterName":"PM10","AQI":24,"Category":{"Number":1,"Name":"Good"}}
+]
+'''
+
+
+def checkQuality():
+    try:
+        # Here we are requesting to the website to fetch all their information
+        api_request = requests.get(
+            "https://www.airnowapi.org/aq/observation/zipCode/current/?format=application/json&zipCode=" + e_zip.get() + "&distance=5&API_KEY=3241B677-4601-4C55-8072-8E428259C67E")
+
+        # json.loads is used to load the information that we get in the form json file
+        # And .content means to loads all the content that is present
+        api = json.loads(api_request.content)
+
+        # Creating a variable to fetch the ReportingArea which is city like (New York)
+        # And api[0] means that we are fetching it from the above DateObserved content whose index number 0(1st line)
+        city = api[0]["ReportingArea"]
+        # Creating a variable to fetch the Air Quality Index which is like (32 or 54)
+        air_quality = api[0]["AQI"]
+        # Creating a variable to fetch the Name of Category which is like (Good or Moderate)
+        category = api[0]["Category"]["Name"]
+
+        # Here we are changing the color of the bg according to the category name
+        if category == "Good":
+            weather_color = "#0C0"
+
+        elif category == "Moderate":
+            weather_color = "#FFFF00"
+
+        elif category == "Unhealthy for Sensitive Groups":
+            weather_color = "#ff9900"
+
+        elif category == "Unhealthy":
+            weather_color = "#FF0000"
+
+        elif category == "Very Unhealthy":
+            weather_color = "990066"
+
+        elif category == "Hazardous":
+            weather_color = "#660000"
+
+        root.configure(background=weather_color)
+        l_api.config(text=city + ", Air Quality : " + str(air_quality) + ", " + category, font="Cooper 20 bold",
+                      bg=weather_color)
+
+    except Exception as e:
+        api = "Error...."
+
+
+l_api = Label(root, text="", font="Cooper 20 bold")
+l_api.grid(pady=10)
+
+e_zip = Entry(root, bd=5, font="Cooper 12 bold")
+e_zip.grid(pady=10)
+
+b_search = Button(root, text="Search", font="Cooper 10 bold", bg="silver", bd=5, command=checkQuality)
+b_search.grid(pady=10)
+
+root.mainloop()

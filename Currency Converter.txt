@@ -1,0 +1,141 @@
+from tkinter import *
+from tkinter import ttk
+from tkinter import messagebox
+
+root = Tk()
+
+root.geometry("600x560")
+root.title("Currency Converter")
+tabControl = ttk.Notebook(root)
+
+tab1 = ttk.Frame(tabControl)
+tab2 = ttk.Frame(tabControl)
+
+tabControl.add(tab1, text='Currencies')
+tabControl.add(tab2, text='Converter')
+tabControl.pack(expand=1, fill="both")
+
+# Disabling the Tab-2 (Converter)
+tabControl.tab(1, state=DISABLED)
+
+
+#  **$$**  TAB-1 (CURRENCIES) FUNCTIONS  **$$**  #
+
+
+def lock():
+    # If any of the Entry boxes are not filled then show warning to the user
+    if not e_firstCurrency.get() or not e_CurrencyToConvertIn.get() or not e_ConvertingRatio.get():
+        messagebox.showwarning("Currency Converter", "You haven't fill the Empty boxes")
+    else:
+        # Disabling the Entry Boxes
+        e_firstCurrency.config(state=DISABLED)
+        e_CurrencyToConvertIn.config(state=DISABLED)
+        e_ConvertingRatio.config(state=DISABLED)
+
+        # Enabling Tab-2
+        tabControl.tab(1, state=NORMAL)
+
+        # Changing the name of the LabelFrame from Tab-2
+        firstConverter.config(text=f"Amount in {e_firstCurrency.get()}")
+        secondConverter.config(text=f"Amount converted to {e_CurrencyToConvertIn.get()}")
+
+
+def unlock():
+    # Enabling the Entry Boxes
+    e_firstCurrency.config(state=NORMAL)
+    e_CurrencyToConvertIn.config(state=NORMAL)
+    e_ConvertingRatio.config(state=NORMAL)
+
+    # Disabling Tab-2
+    tabControl.tab(1, state=DISABLED)
+
+
+def clearAll():
+    e_firstCurrency.delete(0, END)
+    e_CurrencyToConvertIn.delete(0, END)
+    e_ConvertingRatio.delete(0, END)
+
+
+#  **$$**  TAB-1 (CURRENCIES)  **$$**  #
+
+#  ^^**  FIRST CURRENCY LABELFRAME  ^^**  #
+firstCurrency = LabelFrame(tab1, text="First Currency", padx=80, pady=20)
+firstCurrency.pack(pady=10)
+
+e_firstCurrency = Entry(firstCurrency, font="Cooper 20 bold", width=20, bd=10)
+e_firstCurrency.pack(pady=10, padx=10)
+
+#  ^^**  SECOND CURRENCY LABELFRAME  ^^**  #
+secondCurrency = LabelFrame(tab1, text="Second Currency", padx=80, pady=20)
+secondCurrency.pack(pady=10)
+
+l_conversion = Label(secondCurrency, text="Currency you want to convert in", font="Cooper 12 bold")
+l_conversion.pack(pady=10)
+
+e_CurrencyToConvertIn = Entry(secondCurrency, font="Cooper 20 bold", width=20, bd=10)
+e_CurrencyToConvertIn.pack(pady=10, padx=10)
+
+l_ConvertingRatio = Label(secondCurrency, text="Conversion Rate", font="Cooper 12 bold")
+l_ConvertingRatio.pack(pady=10)
+
+e_ConvertingRatio = Entry(secondCurrency, font="Cooper 20 bold", width=20, bd=10)
+e_ConvertingRatio.pack(pady=10, padx=10)
+
+btn_frame = Frame(secondCurrency)
+btn_frame.pack(pady=10)
+
+b_lock = Button(btn_frame, text="Lock", font="Cooper 12 bold", bg="grey", bd=5, command=lock)
+b_lock.grid(row=0, column=0)
+
+b_unlock = Button(btn_frame, text="Unlock", font="Cooper 12 bold", bg="grey", bd=5, command=unlock)
+b_unlock.grid(row=0, column=1, padx=20)
+
+b_clearAll = Button(btn_frame, text="Clear All", font="Cooper 12 bold", bg="grey", bd=5, command=clearAll)
+b_clearAll.grid(row=0, column=2)
+
+
+#  **$$**  TAB-2 (CONVERTER) FUNCTIONS  **$$**  #
+
+
+def convert():
+    e_convertedAmount.delete(0, END)
+
+    # Writing the Formula for Conversion
+    conversion = float(e_ConvertingRatio.get()) * float(e_amount.get())
+    # Rounding Off the Decimal Point
+    conversion = round(conversion, 2)
+
+    # Inserting the Converted Currency to the screen
+    e_convertedAmount.insert(0, conversion)
+
+
+def clear():
+    e_amount.delete(0, END)
+    e_convertedAmount.delete(0, END)
+
+
+#  **$$**  TAB-2 (CONVERTER)  **$$**  #
+
+#  ^^**  FIRST CONVERTER LABELFRAME  ^^**  #
+firstConverter = LabelFrame(tab2, text="Amount to convert in", padx=80, pady=20)
+firstConverter.pack(pady=10)
+
+e_amount = Entry(firstConverter, font="Cooper 20 bold", width=20, bd=10)
+e_amount.pack(pady=10, padx=10)
+
+b_convert = Button(firstConverter, text="Convert", font="Cooper 12 bold", bg="grey", bd=5, command=convert)
+b_convert.pack(pady=20)
+
+#  ^^**  SECOND CONVERTER LABELFRAME  ^^**  #
+secondConverter = LabelFrame(tab2, text="Converted Currency", padx=80, pady=20)
+secondConverter.pack(pady=10)
+
+e_convertedAmount = Entry(secondConverter, font="Cooper 20 bold", width=20, bd=0, bg="SystemButtonFace")
+e_convertedAmount.pack(pady=10, padx=10)
+
+b_clear = Button(tab2, text="Clear", font="Cooper 12 bold", bg="grey", bd=5, command=clear)
+b_clear.pack(pady=20)
+
+root.mainloop()
+
+

@@ -1,0 +1,71 @@
+from tkinter import *
+from PIL import ImageTk, Image
+
+root = Tk()
+root.title("Basic Text Edits")
+
+photo1 = ImageTk.PhotoImage(Image.open("Photoshop/actors.png"))
+photo2 = ImageTk.PhotoImage(Image.open("Photoshop/Delicious.png"))
+photo3 = ImageTk.PhotoImage(Image.open("Photoshop/glitch.png"))
+photo4 = ImageTk.PhotoImage(Image.open("Photoshop/Marvel Studios.png"))
+photo5 = ImageTk.PhotoImage(Image.open("Photoshop/skyline.png"))
+photo6 = ImageTk.PhotoImage(Image.open("Photoshop/Sliced.png"))
+photo7 = ImageTk.PhotoImage(Image.open("Photoshop/speed.png"))
+photo8 = ImageTk.PhotoImage(Image.open("Photoshop/surfin.png"))
+photo9 = ImageTk.PhotoImage(Image.open("Photoshop/things.png"))
+photo10 = ImageTk.PhotoImage(Image.open("Photoshop/Vintage.png"))
+
+
+def forward(image_number):
+    global l1
+    global b1
+    global b3
+
+    l1.destroy()
+
+    l1 = Label(image=image_gallery[image_number-1])
+    b3 = Button(root, text=">>", font="Cooper 12 bold", bg="grey", bd=5, command=lambda: forward(image_number+1))
+    b1 = Button(root, text="<<", font="Cooper 12 bold", bg="grey", bd=5, command=lambda: backward(image_number - 1))
+
+    if image_number == 10:
+        b3 = Button(root, text=">>", state=DISABLED)
+
+    b3.grid(row=1, column=2, ipadx=10)
+    b1.grid(row=1, column=0, ipadx=10)
+    l1.grid(row=0, column=0, columnspan=3)
+
+
+def backward(image_number):
+    global l1
+    global b1
+    global b3
+
+    l1.destroy()
+
+    l1 = Label(image=image_gallery[image_number-1])
+    b1 = Button(root, text="<<", font="Cooper 12 bold", bg="grey", bd=5, command=lambda: backward(image_number-1))
+    b3 = Button(root, text=">>", font="Cooper 12 bold", bg="grey", bd=5, command=lambda: forward(image_number + 1))
+
+    if image_number == 1:
+        b1 = Button(root, text="<<", state=DISABLED)
+
+    b1.grid(row=1, column=0, ipadx=10)
+    b3.grid(row=1, column=2, ipadx=10)
+    l1.grid(row=0, column=0, columnspan=3)
+
+
+image_gallery = [photo1, photo2, photo3, photo4, photo5, photo6, photo7, photo8, photo9, photo10]
+
+l1 = Label(image=photo1)
+l1.grid(row=0, column=0, columnspan=3)
+
+b1 = Button(root, text="<<", font="Cooper 12 bold", bg="grey", bd=5, command=backward, state=DISABLED)
+b1.grid(row=1, column=0, ipadx=10, pady=5)
+
+b2 = Button(root, text="Exit", font="Cooper 12 bold", bg="grey", bd=5, command=root.destroy)
+b2.grid(row=1, column=1, ipadx=10)
+
+b3 = Button(root, text=">>", font="Cooper 12 bold", bg="grey", bd=5, command=lambda: forward(2))
+b3.grid(row=1, column=2, ipadx=10)
+
+root.mainloop()

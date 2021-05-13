@@ -1,0 +1,127 @@
+from tkinter import *
+import random
+
+root = Tk()
+
+root.geometry("640x420")
+root.title("Spanish Learning Language")
+
+words = [
+    ("Buenos días", "Good morning"),
+    ("Buenas tardes", "Good afternoon"),
+    ("Buenas noches", "Good night"),
+    ("¿Cómo estás?", "How are you?"),
+    ("¡Gracias!", "Thank you"),
+    ("¡De nada!", "You’re welcome"),
+    ("Por favor", "Please"),
+    ("¡Lo siento!", "Sorry"),
+    ("Claro", "Of course"),
+    ("Hola", "Hello"),
+    ("Adiós", "Goodbye"),
+    ("vamos", "Come on"),
+    ("Amor", "Love"),
+    ("Siempre", "Always"),
+    ("Nunca", "Never"),
+    ("Bien", "Very well"),
+    ("Mal", "Bad"),
+    ("Genial", "Great"),
+    ("Hasta pronto", "See you later"),
+    ("Cuidate", "Take care"),
+    ("Gusto de conocerte", "Nice to meet you"),
+    ("Hace tiempo", "It's been a while"),
+    ("Me gusta", "I like it"),
+    ("Es broma", "Just kidding"),
+    ("preocupado", "Worried"),
+    ("enojado", "Angry"),
+    ("asustado", "Afraid"),
+    ("Feliz", "Happy"),
+    ("perforado", "Bored"),
+    ("cansado", "Tired"),
+    ("hermoso", "Beautiful"),
+    ("encantado", "Delighted"),
+    ("Disculpe", "Excuse me")]
+
+
+# Creating a variable called count to count the number of tuples present in the list box
+count = len(words)
+
+
+def next():
+    global hinter, hintCount
+    # Clearing the answer label from the screen
+    l_answer.config(text="")
+    # Clearing the Entry box
+    e1.delete(0, END)
+    # clearing the hint label
+    l_hint.config(text="")
+    # also clearing the hinter which keeps track of the Hints
+    hinter = ""
+    # To start the hint count from 0
+    hintCount = 0
+
+    global random_word
+    # Picking a random word from list words
+    random_word = random.randint(0, count-1)
+    # Updating the spanishWords label
+    l_spanishWords.config(text=words[random_word][0])
+
+
+def answer():
+    if e1.get().capitalize() == words[random_word][1]:
+        l_answer.config(text=f"Correct!! {words[random_word][0]} is {words[random_word][1]}", fg="green")
+    else:
+        l_answer.config(text=f"Incorrect!! {words[random_word][0]} is not {e1.get().capitalize()}", fg="red")
+
+
+# We are keeping hinter as an empty strings so that we can add hint letters into it one by one 
+hinter = ""
+# To keep an account of how much letter is going to reveal at a time
+hintCount = 0
+
+
+def hint():
+    global hintCount, hinter
+
+    if hintCount < len(words[random_word][1]):
+        hinter += words[random_word][1][hintCount]
+        l_hint.config(text=hinter)
+        hintCount += 1
+
+
+# Labels
+l_title = Label(root, text="Learn Spanish Words", font=("Cooper", "25", "bold", "underline"), fg="#ffc400")
+l_title.pack(pady=10)
+
+l_spanishWords = Label(root, text="", font="Cooper 50 bold", fg="#c60b1e")
+l_spanishWords.pack(pady=10)
+
+l_answer = Label(root, text="", font="Cooper 15 bold")
+l_answer.pack(pady=10)
+
+
+# Entry Box
+e1 = Entry(root, font="Cooper 20 bold", bd=5)
+e1.pack(pady=10)
+
+
+# Frame for Buttons
+btn_frame = Frame(root)
+btn_frame.pack(pady=10)
+
+# Buttons
+b_next = Button(btn_frame, text="Next Word", font="Cooper 15 bold", bg="#214ef5", bd=5, command=next)
+b_next.grid(row=0, column=0)
+
+b_submit = Button(btn_frame, text="Submit", font="Cooper 15 bold", bg="#214ef5", bd=5, command=answer)
+b_submit.grid(row=0, column=1, padx=20)
+
+b_hint = Button(btn_frame, text="Hint", font="Cooper 15 bold", bg="#214ef5", bd=5, command=hint)
+b_hint.grid(row=0, column=2)
+
+
+# Label for hints
+l_hint = Label(root, text="", font="Cooper 15 bold")
+l_hint.pack(pady=10)
+
+next()
+root.mainloop()

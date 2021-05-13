@@ -1,0 +1,25 @@
+from tkinter import *
+from tkcalendar import *
+
+root = Tk()
+
+root.title("Date Picker Calender")
+root.geometry("600x400")
+# To put all our contents at the center
+root.columnconfigure(0, weight=1)
+
+cal = Calendar(root, selectmode="day", year=2021, month=4, day=15)
+cal.grid(pady=20)
+
+
+def grabDate():
+    l1.config(text=cal.get_date())
+
+
+b1 = Button(root, text="Select Date", font="Cooper 12 bold", bg="grey", bd=5, command=grabDate)
+b1.grid()
+
+l1 = Label(root, text="", font="Cooper 10 bold")
+l1.grid(pady=20)
+
+root.mainloop()

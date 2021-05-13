@@ -1,0 +1,120 @@
+from tkinter import *
+import random
+
+root = Tk()
+
+root.geometry("640x420")
+root.title("States Of India and It's Capitals")
+
+words = [
+    ("Andhra pradesh", "Amaravati"),
+    ("Arunachal Pradesh", "Itanagar"),
+    ("Assam", "Dispur"),
+    ("Bihar", "Patna"),
+    ("Chhattisgarh", "Raipur"),
+    ("Goa", "Panaji"),
+    ("Gujarat", "Gandhinagar"),
+    ("Haryana", "Chandigarh"),
+    ("Himachal Pradesh", "Shimla"),
+    ("Jharkhand", "Ranchi"),
+    ("Karnataka", "Bengaluru"),
+    ("Kerala", "Thiruvananthapuram"),
+    ("Madhya Pradesh", "Bhopal"),
+    ("Manipur", "Imphal"),
+    ("Meghalaya", "Shillong"),
+    ("Mizoram", "Aizwal"),
+    ("Nagaland", "Kohima"),
+    ("Odisha", "Bhubaneshwar"),
+    ("Punjab", "Chandigarh"),
+    ("Rajasthan", "Jaipur"),
+    ("Sikkim", "Gangtok"),
+    ("Tamil Nadu", "Chennai"),
+    ("Telangana", "Hyderabad"),
+    ("Tripura", "Agartala"),
+    ("Uttar pradesh", "Lucknow"),
+    ("West Bengal", "Kolkata")]
+
+
+# Creating a variable called count to keep track of the index number of words
+count = len(words)
+
+
+def nextState():
+    global hinter, hintCount
+    # Clearing the answer label from the screen
+    l_answer.config(text="")
+    # Clearing the Entry box
+    e1.delete(0, END)
+    # clearing the hint label
+    l_hint.config(text="")
+    # also clearing the hinter which keeps track of the Hints
+    hinter = ""
+    # To start the hint count from 0
+    hintCount = 0
+
+    global random_word
+    # Picking a random word from list words
+    random_word = random.randint(0, count-1)
+    # Updating the spanishWords label
+    l_states.config(text=words[random_word][0])
+
+
+def answer():
+    if e1.get().capitalize() == words[random_word][1]:
+        l_answer.config(text=f"Correct!! {words[random_word][1]} is the capital of {words[random_word][0]}", fg="green")
+    else:
+        l_answer.config(text=f"Incorrect!! {e1.get().capitalize()} is not the capital of {words[random_word][0]}", fg="red")
+
+
+# To keep a track of a Hint words
+hinter = ""
+# To keep an account of how much letter is going to reveal at a time
+hintCount = 0
+
+
+def hint():
+    global hintCount, hinter
+
+    if hintCount < len(words[random_word][1]):
+        hinter = hinter + words[random_word][1][hintCount]
+        l_hint.config(text=hinter)
+        hintCount += 1
+
+
+# Labels
+l_title = Label(root, text="States and It's Capitals", font=("Cooper", "30", "bold", "underline"), fg="#ff9933")
+l_title.pack(pady=10)
+
+l_states = Label(root, text="", font="Cooper 50 bold", fg="#000088")
+l_states.pack(pady=10)
+
+l_answer = Label(root, text="", font="Cooper 15 bold")
+l_answer.pack(pady=10)
+
+
+# Entry Box
+e1 = Entry(root, font="Cooper 20 bold", bd=5)
+e1.pack(pady=10)
+
+
+# Frame for Buttons
+btn_frame = Frame(root)
+btn_frame.pack(pady=10)
+
+# Buttons
+b_nextState = Button(btn_frame, text="Next State", font="Cooper 15 bold", bg="#128807", bd=5, command=nextState)
+b_nextState.grid(row=0, column=0)
+
+b_submit = Button(btn_frame, text="Submit", font="Cooper 15 bold", bg="#128807", bd=5, command=answer)
+b_submit.grid(row=0, column=1, padx=20)
+
+b_hint = Button(btn_frame, text="Hint", font="Cooper 15 bold", bg="#128807", bd=5, command=hint)
+b_hint.grid(row=0, column=2)
+
+
+# Label for hints
+l_hint = Label(root, text="", font="Cooper 15 bold")
+l_hint.pack(pady=10)
+
+nextState()
+root.mainloop()

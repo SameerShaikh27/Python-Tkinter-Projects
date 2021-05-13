@@ -1,0 +1,56 @@
+from tkinter import *
+
+root = Tk()
+
+root.title("Word Search")
+root.geometry("640x460")
+
+# Creating a Frame to place Top Frame widgets into it
+f1 = Frame(root)
+f1.pack(side=TOP)
+
+l1 = Label(f1, text='Text to find :', font="Cooper 12 bold")
+l1.pack(side=LEFT, padx=10)
+
+e1 = Entry(f1, bd=3, font="arial 12")
+e1.focus_set()
+e1.pack(side=LEFT, pady=20, padx=10)
+
+b1 = Button(f1, text='Find', bd=5, bg="grey", font="Cooper 10 bold")
+b1.pack(side=RIGHT, padx=20)
+
+# Creating a TextArea
+text_area = Text(root, font="arial 10")
+text_area.insert('1.0', '''Type your text here''')
+text_area.pack(side=BOTTOM)
+
+
+def find():
+    # .tag_remove('found', 1.0, END) is removing the founded word from focus when we have to find another word
+    text_area.tag_remove('found', 1.0, END)
+
+    # Here we are Fetching the word from the Entry box to find that word
+    words = e1.get()
+    if words:
+        idx = '1.0'
+        while 1:
+            # Here we are searching for the word from Entry entry box
+            idx = text_area.search(words, idx, nocase=1, stopindex=END)
+            if not idx:
+                break
+
+            # last index sum of current index and length of text
+            lastidx = '%s+%dc' % (idx, len(words))
+
+            # overwrite 'Found' at idx
+            text_area.tag_add('found', idx, lastidx)
+            idx = lastidx
+
+            # mark located string as red
+        text_area.tag_config('found', foreground='red')
+    e1.focus_set()
+
+
+b1.config(command=find)
+
+root.mainloop()
